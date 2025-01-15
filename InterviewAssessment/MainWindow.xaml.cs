@@ -18,8 +18,9 @@ namespace DomainModelEditor
 
             EntityStore = new EntityStore();
 
-            var demoData = new[] { new Tuple<int, string, int, int>(1, "Order", 100, 100), new Tuple<int, string, int, int>(2, "OrderLine", 200, 200) };
-            EntityStore.Load(demoData);
+            var demoData = new[] { new Tuple<int, string, int, int>(1, "Order", 100, 100), new Tuple<int, string, int, int>(2, "OrderLine", 200, 200) };//This line was calling the initial dummy objects. Now I am able to read from entities.sqlite
+            var entitiesFromDatabase = EntityStore.GetEntitiesFromDatabase();  // I am calling the new function I created which reads from entities.sqlite
+            EntityStore.Load(entitiesFromDatabase); //I changed Demodata with entitiesFromDatabase which is the variable that contains info of id, name, x and y axis
 
             var entitiesBinding = new Binding {Source = EntityStore};
             EditorCanvas.SetBinding(ItemsControl.ItemsSourceProperty, entitiesBinding);
