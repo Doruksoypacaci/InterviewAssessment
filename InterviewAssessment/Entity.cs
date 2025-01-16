@@ -1,22 +1,55 @@
-﻿namespace DomainModelEditor
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace DomainModelEditor
 {
-    public class Entity
+    public class Entity : INotifyPropertyChanged
     {
         public Entity(int id, string name, int x, int y)
         {
             Id = id;
             Name = name;
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
 
         public int Id { get; }
 
         public string Name { get; }
 
-        public int X { get; }
+        private int _x;
+        public int X //Making X ready to be changed when the cursor is dragging the elemenet
+        {
+            get => _x;
+            set
+            {
+                if (_x != value)
+                {
+                    _x = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
-        public int Y { get; }
+        private int _y;
+        public int Y //Making Y ready to be changed when the cursor is dragging the elemenet
+        {
+            get => _y;
+            set
+            {
+                if (_y != value)
+                {
+                    _y = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
-//This is a test for commit

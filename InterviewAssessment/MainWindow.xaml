@@ -8,17 +8,21 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindow}"
         Title="Mendix Modeler" Height="350" Width="525">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="317*"/>
+            <ColumnDefinition Width="208*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="26"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="Black">
+        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="Black" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" Height="26">
                 <Label Content="Domain Model Editor" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button Width="80" Content="Add Entity" Margin="0,3,0,3" Click="AddEntity_Click"/>
             </StackPanel>
         </Border>
-        <ItemsControl x:Name="EditorCanvas" Grid.Row="1" ItemsSource="{Binding Path=EntityStore}">
+        <ItemsControl x:Name="EditorCanvas" ItemsSource="{Binding Path=EntityStore}" Margin="0,16,0,10" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -32,11 +36,15 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <!-- This is the part that I changed. It makes 3 functions related with mouse movement be called on the entity screen-->
+                    <Grid MouseDown="Entity_MouseDown" 
+                        MouseMove="Entity_MouseMove" 
+                        MouseUp="Entity_MouseUp">
                         <Rectangle Width="80" Height="50" RadiusX="4" RadiusY="4" Stroke="Black" Fill="LightBlue"/>
-                        <Label Content="{Binding Path=Name}"/>
+                        <Label Content="{Binding Path=Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
+
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
