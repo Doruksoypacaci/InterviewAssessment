@@ -11,6 +11,7 @@
             <Label>Name of the new entity</Label>
             <TextBox x:Name="Name" Margin="10"/>
         </StackPanel>
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Add" Click="Add_Click" Width="50" />
             <Button Content="Cancel" Click="Cancel_Click" Margin="10,0" Width="50" />

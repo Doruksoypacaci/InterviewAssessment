@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace DomainModelEditor
 {
@@ -8,10 +9,12 @@ namespace DomainModelEditor
     public partial class AddEntityDialog : Window
     {
         public string EntityName { get; set; }
+        public Dictionary<string, object> Attributes { get; private set; }
 
         public AddEntityDialog()
         {
             InitializeComponent();
+            Attributes = new Dictionary<string, object>();
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -24,5 +27,6 @@ namespace DomainModelEditor
         {
             Close();
         }
+
     }
 }

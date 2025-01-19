@@ -6,13 +6,10 @@ using System.Windows.Input;
 
 namespace DomainModelEditor
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public EntityStore EntityStore { get; set; }
-
+        //private Entity _selectedEntity; // Track the selected entity for adding attributes
         private bool _isDragging; //True False value to represent the state of entity in terms of if it is moving or not by the effect of the cursor
         private Point _startPoint; //initial point before the move which will be updated by the current position
         private object _draggedData; //the entity itself which is our object, its name and id stays same but the coordinates are changing frequently while the move is happening and we see this change ( state of moving) on the UI immediately
@@ -26,7 +23,7 @@ namespace DomainModelEditor
             var entitiesFromDatabase = EntityStore.GetEntitiesFromDatabase();  // I am calling the new function I created which reads from entities.sqlite
             EntityStore.Load(entitiesFromDatabase); //I changed Demodata with entitiesFromDatabase which is the variable that contains info of id, name, x and y axis
 
-            var entitiesBinding = new Binding { Source = EntityStore };
+            var entitiesBinding = new Binding {Source = EntityStore };
             EditorCanvas.SetBinding(ItemsControl.ItemsSourceProperty, entitiesBinding);
         }
         private void Entity_MouseDown(object sender, MouseButtonEventArgs e) //our move is starting by left-clicking the mouse on the entity and keep dragging
@@ -83,5 +80,26 @@ namespace DomainModelEditor
                 EntityStore.Add(popup.EntityName, randomNrGenerator.Next((int)EditorCanvas.ActualWidth - 80), randomNrGenerator.Next((int)EditorCanvas.ActualHeight - 50));
             }
         }
+        
+        private void AddAttribute_Click(object sender, RoutedEventArgs e)
+        {
+            var addAttributeDialog = new AddAttributeDialog();
+            addAttributeDialog.SetEntities(EntityStore);
+
+            // Show the dialog and wait for user input
+            if (addAttributeDialog.ShowDialog() == true)
+            {
+                // Retrieve selected entity and attribute details from the dialog
+                var selectedEntity = addAttributeDialog.SelectedEntity;
+                var attributeNamen = addAttributeDialog.AttributeNamenew;
+                var attributeValuen = addAttributeDialog.AttributeValuenew;
+
+                // Add the attribute to the selected entity
+                selectedEntity.AddAttribute(attributeNamen, attributeValuen);
+                // Refresh the editor canvas to reflect the changes
+                EditorCanvas.Items.Refresh();
+            }
+        }
+        
     }
 }

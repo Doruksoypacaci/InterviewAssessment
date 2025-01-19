@@ -20,6 +20,8 @@
             <StackPanel Orientation="Horizontal" Height="26">
                 <Label Content="Domain Model Editor" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button Width="80" Content="Add Entity" Margin="0,3,0,3" Click="AddEntity_Click"/>
+                <!-- New button for adding attributes -->
+                <Button Width="80" Content="Add Attribute" Margin="0,3,0,3" Click="AddAttribute_Click"/>
             </StackPanel>
         </Border>
         <ItemsControl x:Name="EditorCanvas" ItemsSource="{Binding Path=EntityStore}" Margin="0,16,0,10" Grid.RowSpan="2" Grid.ColumnSpan="2">
@@ -40,11 +42,25 @@
                     <Grid MouseDown="Entity_MouseDown" 
                         MouseMove="Entity_MouseMove" 
                         MouseUp="Entity_MouseUp">
-                        <Rectangle Width="80" Height="50" RadiusX="4" RadiusY="4" Stroke="Black" Fill="LightBlue"/>
-                        <Label Content="{Binding Path=Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Rectangle x:Name="EntityRectangle" Width="80" RadiusX="4" RadiusY="4" Stroke="Black" Fill="LightBlue" Height="{Binding Path=Height}"/>
+                        <StackPanel x:Name="EntityStackPanel" Orientation="Vertical">
+                            <Label Content="{Binding Path=Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ItemsControl ItemsSource="{Binding Path=Attributes}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                            <!-- Making it dynamic and reflecting the newly added attribute name-->
+                                            <Label Content="{Binding Key}"/>
+                                            <!-- Making it dynamic and reflecting the newly added attribute value-->
+                                            <Label Content="{Binding Value}"/>
+                                           
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
-
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
